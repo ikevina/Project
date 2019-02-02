@@ -12,9 +12,9 @@ import sqlite3 as sql
 
 #################################################
 
-engine = create_engine("sqlite:///the name of the db")
+engine = create_engine("sqlite:///FPA_FOD_20170508.sqlite")
+Base = automap_base()
 Base.prepare(engine, reflect=True)
-Passenger = Base.classes.passenger
 session = Session(engine)
 
 #################################################
@@ -25,12 +25,30 @@ session = Session(engine)
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-   return render_template('here should be the name of the HTML')
+@app.route("/")
+def welcome():
+    """List all available api routes."""
+    return (
+        f"Available Routes:<br/>"
+        f"/api/v1.0/fires<br/>"
+    )
 
-# all flast functions and returns should be here
+# all flask functions and returns should be here
+
+# Reference to the table
+fires = Base.classes.Fires
+
+@app.route("/api/v1.0/fires")
+def names():
+    """Return a list of all passenger names"""
+    # Query all passengers
+    results = session.query(fires.FIRE_NAME).all()
+
+    # Convert list of tuples into normal list
+    #  all_names = list(results)
+    return jsonify(results)
+   #  return jsonify(all_names)
 
 
- if __name__ == '__main__':
+if __name__ == '__main__':
    app.run(debug = True)
