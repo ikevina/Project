@@ -1,4 +1,4 @@
-var Data = "C:\Users\Ike\Desktop\Project2\Data\Fires_cleaned.csv"
+var Data = "wildfire_db"
 
 function markerSize(FIRE_SIZE_CLASS) {
   return FIRE_SIZE_CLASS * A-G;

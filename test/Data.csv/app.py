@@ -1,4 +1,4 @@
-import numpy as np
+
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -20,7 +20,7 @@ pymysql.install_as_MySQLdb()
 #################################################
 
 # Create engine
-engine1 = create_engine("mysql://root:Adwoa@362017@localhost/fires")
+engine1 = create_engine("mysql://root:password@localhost/wildfires_db")
 
 # Query the db to Pandas
 data1 = pd.read_sql_query("SELECT * FROM fires", con = engine1)
