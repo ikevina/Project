@@ -3,10 +3,10 @@ function buildMetadata(FIRE_NAME){
   // @TODO: Complete the following function that builds the metafires panel
 
   // Use `d3.json` to fetch the metafires for a sample
-  d3.json("/fires.csv/"+FIRE_NAME).then(function(fires){
+  d3.json("/fires/"+FIRE_NAME).then(function(fires){
     console.log(fires);
     // Use d3 to select the panel with id of `#sample-metafires`
-    let metaPanel = d3.select("#FIRE_NAME-fires.csv");
+    let metaPanel = d3.select("#FIRE_NAME-fires");
     // Use `.html("") to clear any existing fires
     metaPanel.html("");
     // Use `Object.entries` to add each key and value pair to the panel

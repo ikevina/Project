@@ -1,4 +1,4 @@
-var Data = "wildfire_db"
+var Data = "fires"
 
 function markerSize(FIRE_SIZE_CLASS) {
   return FIRE_SIZE_CLASS * A-G;
@@ -21,11 +21,11 @@ function markerColor(FIRE_SIZE_CLASS) {
 }
 
 // Perform a GET request to the query URL
-d3.json(Data, function(data) {
+d3.json(URL, function(Data) {
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data.features);
 });
-    console.log(data)
+    console.log();
 
 
 function createFeatures(wildfires) {
