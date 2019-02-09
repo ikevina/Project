@@ -1,18 +1,20 @@
-function buildMetadata(FIRE_NAME){
 
-  // @TODO: Complete the following function that builds the metafires panel
+function buildMetadata(STATE){
+  // console.log(STATE)
 
   // Use `d3.json` to fetch the metafires for a sample
-  d3.json("/fires/"+FIRE_NAME).then(function(fires){
-    console.log(fires);
+  d3.json("/fires/"+ STATE).then(function(fires){
+    //console.log(fires);
     // Use d3 to select the panel with id of `#sample-metafires`
-    let metaPanel = d3.select("#FIRE_NAME-fires");
+    let metaPanel = d3.select("FIRE_NAME-fires");
     // Use `.html("") to clear any existing fires
     metaPanel.html("");
+    //console.log(Object.entries(fires));
     // Use `Object.entries` to add each key and value pair to the panel
     // Hint: Inside the loop, you will need to use d3 to append new
     // tags for each key-value in the metafires.
     for (const [key,value] of Object.entries(fires)){
+      
       if (key === "FIRE_SIZE_CLASS"){
         continue;
       }
@@ -24,7 +26,7 @@ function buildMetadata(FIRE_NAME){
     }
     // BONUS: Build the Gauge Chart
     // buildGauge(fires.FIRE_SIZE_CLASS);
-    console.log(fires.FIRE_SIZE_CLASS);
+    //console.log(fires.FIRE_SIZE_CLASS);
     // Enter FIRE_SIZE_CLASS frequency between A and G
     var FIRE_SIZE_CLASSfrequency = fires.fires;
 
@@ -96,29 +98,41 @@ function buildMetadata(FIRE_NAME){
   },
 
   function(reason){
-    console.log("No fires returned!");
-    console.log(reason);
+    //console.log("No fires returned!");
+    //console.log(reason);
   });
 };
 
-function buildCharts(FIRE_NAME) {
+function buildCharts(STATE) {
 
   // @TODO: Use `d3.json` to fetch the sample fires for the plots
-  d3.json("/samples/"+FIRE_NAME).then(function(fires){
-    //console.log(fires)
-    FIRE_YEAR = fires.FIRE_YEAR;
-    FIRE_YEARlabels = fires.FIRE_YEAR_labels;
-    FIRE_YEARValues = fires.FIRE_YEAR_values;
+  d3.json("/fires/"+STATE).then(function(fires){
+
+    ////console.log(fires)
+    FIRE_YEAR = [];
+    FIRE_YEARlabels = [];
+    FIRE_YEARValues = [];
+
+    for (var i = 0; i < fires.length; i++){
+    FIRE_YEAR.push(fires[i].FIRE_YEAR);
+    FIRE_YEARlabels.push(fires[i].STAT_CAUSE_DESCR);
+    FIRE_YEARValues.push(fires[i].FIRE_SIZE_CLASS);
+    
+    }
+
+    console.log( FIRE_YEAR,
+      FIRE_YEARlabels,
+      FIRE_YEARValues)
 
     // @TODO: Build a Bubble Chart using the sample fires
     var bubleTrace = {
       x: FIRE_YEAR,
-      y: FIRE_YEARvalues,
-      text: FIRE_YEARlables,
+      y: FIRE_YEARlabels,
+      text: FIRE_YEARlabels,
       mode: 'markers',
       marker: {
         color: FIRE_YEAR,
-        size: FIRE_YEARvalues
+        size: FIRE_YEARValues
       }
     };
     var bublefires = [bubleTrace];
@@ -139,16 +153,22 @@ function buildCharts(FIRE_NAME) {
     Plotly.newPlot('bubble', bublefires, bubbleLayout);
 
     // @TODO: Build a Pie Chart
-    // HINT: You will need to use slice() to grab the top 10 FIRE_NAME_values,
+    // HINT: You will need to use slice() to grab the top 10 STATE_values,
     // otu_ids, and labels (10 each).
     //The data is already sorted in the backend by pandas
-    pieFIRE_YEAR = fires.FIRE_YEAR.slice(0,10);
-    pieFIRE_YEARlables = fires.FIRE_YEAR_labels.slice(0,10);
-    pieValues = fires.FIRE_YEAR_values.slice(0,10);
     
+    var pieFIRE_YEAR = [];
+    var pieFIRE_YEARlables = [];
+    var pieValues = [];
+
+    for (var i = 0; i < fires.length; i++){
+      pieFIRE_YEAR = fires[i].FIRE_YEAR;
+      pieFIRE_YEARlables = fires[i].FIRE_YEAR_labels;
+      pieValues = fires[i].FIRE_YEAR_values;
+    }
     var pieTrace = {
       values: pieValues,
-      labels: pieFIRE_YEARIds,
+      labels: pieFIRE_YEAR,
       hovertext: pieFIRE_YEARLables,
       type: 'pie',
     };
@@ -165,8 +185,8 @@ function buildCharts(FIRE_NAME) {
   },
   //callback function to handle error in case we did not receive the json fires.
   function(reason){
-    console.log("did not receive data!");
-    console.log(reason);
+    //console.log("did not receive data!");
+    //console.log(reason);
   });
 };
 
@@ -175,25 +195,33 @@ function init() {
   var selector = d3.select("#selDataset");
 
   // Use the list of sample names to populate the select options
-  d3.json("/names").then((FIRE_NAMENames) => {
-    FIRE_NAMENames.forEach((FIRE_NAME) => {
+  d3.json("/names").then((STATENames) => {
+    //console.log(STATENames)
+    var STATE = []
+    for (key in STATENames){
+      STATE.push(STATENames[key]);
+    }
+    //console.log(STATE);
+    STATENames.forEach((STATE) => {
       selector
         .append("option")
-        .text(FIRE_NAME)
-        .property("value", FIRE_NAME);
+        .text(STATE)
+        .property("value", STATE);
     });
 
     // Use the first sample from the list to build the initial plots
-    const firstFIRE_NAME = FIRE_NAMENames[0];
-    buildCharts(firstFIRE_NAME);
-    buildMetadata(firstFIRE_NAME);
+    const firstSTATE = STATENames[0];
+    //console.log("FirstState: ", firstSTATE);
+    buildCharts(firstSTATE);
+    buildMetadata(firstSTATE);
   });
 }
 
-function optionChanged(newFIRE_NAME) {
+function optionChanged(newSTATE) {
   // Fetch new fires each time a new sample is selected
-  buildCharts(newFIRE_NAME);
-  buildMetadata(newFIRE_NAME);
+  // console.log("New State: " + newSTATE)
+  buildCharts(newSTATE);
+  buildMetadata(newSTATE);
 }
 
 // Initialize the dashboard

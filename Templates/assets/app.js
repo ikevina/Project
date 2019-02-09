@@ -25,7 +25,7 @@ d3.json(URL, function(Data) {
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data.features);
 });
-    console.log();
+    //console.log();
 
 
 function createFeatures(wildfires) {

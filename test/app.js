@@ -23,14 +23,14 @@ function markerColor(FIRE_SIZE_CLASS) {
 // Perform a GET request to the query Data
 d3.csv(Data, function(csv) {
   Data.csv.filter(function(row) {
-      console.log(Data);
+      //console.log(Data);
       return row['FIRE_SIZE_CLASS'], row['LATITUDE'], row[LONGITUDE];
   });
 d3.csv(Data, function(data) {
   //  Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data.features);
 });
-    console.log(data);
+    //console.log(data);
 
 
 function createFeatures(wildfires) {
