@@ -28,10 +28,10 @@ function buildMetadata(STATE){
     // buildGauge(fires.FIRE_SIZE_CLASS);
     //console.log(fires.FIRE_SIZE_CLASS);
     // Enter FIRE_SIZE_CLASS frequency between A and G
-    var FIRE_SIZE_CLASSfrequency = fires.fires;
+    var FIRE_SIZE_CLASSfrequency = FIRE_SIZE_CLASS.fires;
 
     // Trig to calc meter point
-    var degrees = 180 - 180*FIRE_SIZE_CLASSfrequencies,
+    var degrees = 180 - 180*FIRE_SIZE_CLASSfrequency,
         radius = .5;
     var radians = degrees * Math.PI / 180;
     var x = radius * Math.cos(radians);
@@ -129,6 +129,7 @@ function buildCharts(STATE) {
       x: FIRE_YEAR,
       y: FIRE_YEARlabels,
       text: FIRE_YEARlabels,
+      text: FIRE_YEARValues,
       mode: 'markers',
       marker: {
         color: FIRE_YEAR,
@@ -138,12 +139,12 @@ function buildCharts(STATE) {
     var bublefires = [bubleTrace];
     
     var bubbleLayout = {
-      title: 'bubble chart',
+      title: 'Fires by the Cause',
       xaxis: {
-        title: 'otu IDs',
+        title: 'Years',
       },
       yaxis: {
-        title: 'sample size',
+        title: 'Cause',
       },
       showlegend: false,
       height: 600,
@@ -157,18 +158,19 @@ function buildCharts(STATE) {
     // otu_ids, and labels (10 each).
     //The data is already sorted in the backend by pandas
     
-    var pieFIRE_YEAR = [];
+    // var pieFIRE_YEAR = [];
     var pieFIRE_YEARlables = [];
     var pieValues = [];
+    
 
     for (var i = 0; i < fires.length; i++){
-      pieFIRE_YEAR = fires[i].FIRE_YEAR;
-      pieFIRE_YEARlables = fires[i].FIRE_YEAR_labels;
-      pieValues = fires[i].FIRE_YEAR_values;
+      // pieFIRE_YEAR =push( fires[i].FIRE_YEAR);
+      pieFIRE_YEARlables = push(fires[i].STAT_CAUSE_DESCR);
+      // pieValues =push(fires[i].FIRE_SIZE_CLASS);
     }
     var pieTrace = {
-      values: pieValues,
-      labels: pieFIRE_YEAR,
+      values:counts,
+      labels: pieFIRE_YEARlables,
       hovertext: pieFIRE_YEARLables,
       type: 'pie',
     };

@@ -21,7 +21,7 @@ app = Flask(__name__)
 #################################################
 
 # Create engine
-engine1 = create_engine("mysql://root:Adwoa@362017@localhost/wildfire_db")
+engine1 = create_engine("mysql://root:Al00sh_2010@localhost/fires")
 
 # Query the db to Pandas
 fires = pd.read_sql_query("SELECT * FROM fires", con = engine1)
@@ -29,7 +29,8 @@ fires = pd.read_sql_query("SELECT * FROM fires", con = engine1)
 
 #  Test Pandas_df
 print(fires.head())
-
+fires_count=fires["STAT_CAUSE_DESCR"].value_counts()
+fires_count
 #print(results)
 # print(fire.heads.to_json(orient = 'records'))
 
