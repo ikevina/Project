@@ -29,8 +29,7 @@ fires = pd.read_sql_query("SELECT * FROM fires", con = engine1)
 
 #  Test Pandas_df
 print(fires.head())
-fires_count=fires["STAT_CAUSE_DESCR"].value_counts()
-fires_count
+
 #print(results)
 # print(fire.heads.to_json(orient = 'records'))
 
